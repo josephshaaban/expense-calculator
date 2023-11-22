@@ -21,20 +21,27 @@ const conn = require("./config/connection");
 // Error handling
 
 // Listen to server
-conn.then(db => {
-  if (!db) return process.exit(1);
-  else {
+conn
+  .then((db) => {
+    if (!db) return process.exit(1);
+    else {
       // listen to the http server
       app.listen(PORT, function (err) {
-          if (err) { console.error(err); }
-          else {
-            console.log(`API server running on port ${PORT}!`);
-            console.log(`Use expense calculator API at http://localhost:${PORT}${BASE_URL}`);
-          }
+        if (err) {
+          console.error(err);
+        } else {
+          console.log(`API server running on port ${PORT}!`);
+          console.log(
+            `Use expense calculator API at http://localhost:${PORT}${BASE_URL}`,
+          );
+        }
       });
-      app.on('error', err => console.log("Failed to Connect with HTTP Server: " + err));
-  }
-  // error in mongodb connection
-}).catch(error => {
-  console.log("Connection failed...!" + error);
-})
+      app.on("error", (err) =>
+        console.log("Failed to Connect with HTTP Server: " + err),
+      );
+    }
+    // error in mongodb connection
+  })
+  .catch((error) => {
+    console.log("Connection failed...!" + error);
+  });
