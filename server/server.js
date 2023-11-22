@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const path = require("path");
+const usersRoute = require("./routes/usersRoute");
+const accountsRoute = require("./routes/accountsRoute");
+const transactionsRoute = require("./routes/transactionsRoute");
 
 // Load environment variabls from config.env file
 require("dotenv").config({ path: "./config.env" });
@@ -10,7 +13,7 @@ const API_VERSION = process.env.API_VERSION || "v1";
 const API_URI = process.env.API_URI || `/api/${API_VERSION}`;
 
 // Middlewares
-app.use(express.json()); //parse incoming data
+app.use(express.json());
 app.use(cors());
 
 // MongoDB Connection
