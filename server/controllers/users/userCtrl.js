@@ -9,13 +9,19 @@ const {
 // Get user profile controller
 const userProfileCtrl = async (req, res) => {
   try {
-  // Get user profile by user ID
-
-  // Send the response
-      
+    // Get user profile by user ID
+    const user = await User.findById(req.user).populate({
+      path: "accounts",
+      populate: {
+        path: "transactions",
+        model: "Transaction",
+      },
+    });
+    // Send the response
+    res.json(user);
   } catch (error) {
     // Catching the error
-
+    next(appErr(error.message, 500));
   }
 };
 

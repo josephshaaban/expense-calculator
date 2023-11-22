@@ -8,7 +8,7 @@ const isLoggedUser = (req, res, next) => {
   // Verify token
   const decodedUser = verifyToken(token);
   // save the user into req object
-  req.user = decodedUser.id;
+  req.user = decodedUser._id;
   if (!decodedUser) {
     return next(appErr("Invalid/Expired Token, Please Login again", 401));
   }
