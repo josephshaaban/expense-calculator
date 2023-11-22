@@ -17,6 +17,9 @@ app.use(cors());
 const conn = require("./config/connection");
 
 // Routes
+app.use(`${API_URI}/users`, usersRoute);
+app.use(`${API_URI}/accounts`, accountsRoute);
+app.use(`${API_URI}/transactions`, transactionsRoute);
 
 // Error handling
 
