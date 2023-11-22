@@ -3,7 +3,7 @@ Develop a simple expense calculator application that allows users to manage thei
 
 ## Tasks:
 ## Backend Development (Node.js)
-### &#x2611; User Authentication
+### &#x2610; User Authentication
 - &#x2610; Implement user registration functionality, including user information collection(name, email, password).
 - &#x2610; Create a login page for registered users.
 - &#x2610; Implement a password reset feature allowing users to reset their passwords viaemail.

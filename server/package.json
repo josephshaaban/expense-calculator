@@ -1,0 +1,25 @@
+{
+    "name": "server",
+    "version": "1.0.0",
+    "description": "A simple expense calculator backend.",
+    "main": "server.js",
+    "scripts": {
+        "watch": "nodemon server.js",
+        "start": "node server.js",
+        "build": "npm i"
+    },
+    "keywords": [],
+    "author": "Youssef Shaaban",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.20.2",
+        "concurrently": "^8.2.2",
+        "cors": "^2.8.5",
+        "dotenv": "^16.3.1",
+        "express": "^4.18.2",
+        "mongoose": "^8.0.1"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.1"
+    }
+}
