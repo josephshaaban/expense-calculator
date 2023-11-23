@@ -1,18 +1,32 @@
-const { appErr } = require("../helpers/appErr");
 const getTokenFromHeader = require("../helpers/getTokenFromHeader");
 const verifyToken = require("../helpers/verifyToken");
 
 const isLoggedUser = (req, res, next) => {
-  // Get token from req header
-  const token = getTokenFromHeader(req);
-  // Verify token
-  const decodedUser = verifyToken(token);
-  // save the user into req object
-  req.user = decodedUser._id;
-  if (!decodedUser) {
-    return next(appErr("Invalid/Expired Token, Please Login again", 401));
+  let token, decodedUser;
+  try {
+    // Get token from req header
+    token = getTokenFromHeader(req);
+    // Verify token
+    decodedUser = verifyToken(token);
+    // save the user into req object
+    req.user = { email: decodedUser.email, _id: decodedUser._id };
+
+    next();
+  } catch (err) {
+    if(!token || !decodedUser) res.status(401).json({
+      success: false,
+      result: null,
+      message: "Invalid/Expired Token, Please Login again",
+      jwtExpired: true,
+    });
+    else
+    res.status(500).json({
+      success: false,
+      result: null,
+      message: err.message,
+      jwtExpired: true,
+    });
   }
-  next();
 };
 
 module.exports = isLoggedUser;

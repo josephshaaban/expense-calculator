@@ -2,9 +2,12 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const path = require("path");
+
 const usersRoute = require("./routes/usersRoute");
 const accountsRoute = require("./routes/accountsRoute");
 const transactionsRoute = require("./routes/transactionsRoute");
+
+const globalErrorHandler = require("./middlewares/globalErrorHandler");
 
 // Load environment variabls from config.env file
 require("dotenv").config({ path: "./config.env" });
@@ -25,6 +28,7 @@ app.use(`${API_URI}/accounts`, accountsRoute);
 app.use(`${API_URI}/transactions`, transactionsRoute);
 
 // Error handling
+app.use(globalErrorHandler);
 
 // Connect to MongoDB and then listen to server
 conn

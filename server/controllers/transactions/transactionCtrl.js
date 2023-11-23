@@ -11,7 +11,12 @@ const transactionGetCtrl = async (req, res, next) => {
     const trans = await Transaction.find();
     res.status(200).json({ status: "success", data: trans });
   } catch (error) {
-    next(appErr(error.message, 500));
+    // Server Error
+    res.status(500).json({
+      success: false,
+      result: null,
+      message: err.message,
+    });
   }
 };
 
@@ -22,7 +27,12 @@ const transactionByIDCtrl = async (req, res, next) => {
     const trans = await Transaction.findById(id);
     res.json({ status: "success", data: trans });
   } catch (error) {
-    next(appErr(error.message, 500));
+    // Server Error
+    res.status(500).json({
+      success: false,
+      result: null,
+      message: err.message,
+    });
   }
 };
 

@@ -19,9 +19,13 @@ const userProfileCtrl = async (req, res) => {
     });
     // Send the response
     res.json(user);
-  } catch (error) {
-    // Catching the error
-    next(appErr(error.message, 500));
+  } catch (err) {
+    // Catching server Error
+    res.status(500).json({
+      success: false,
+      result: null,
+      message: err.message,
+    });
   }
 };
 

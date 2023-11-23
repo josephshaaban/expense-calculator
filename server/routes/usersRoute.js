@@ -18,7 +18,7 @@ usersRoute.post("/login", userLoginCtrl);
 usersRoute.get("/profile/", isLoggedUser, userProfileCtrl);
 // BASE_URL/users/
 usersRoute.delete("/", isLoggedUser, userDeleteCtrl);
-// BASE_URL/users/:ID
-usersRoute.put("/", isLoggedUser, userUpdateCtrl);
+// BASE_URL/users/
+usersRoute.patch("/", isLoggedUser, userUpdateCtrl);
 
 module.exports = usersRoute;
