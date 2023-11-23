@@ -69,8 +69,8 @@ const userUpdateCtrl = async (req, res) => {
 
     let updates = {
       email: req.body.email,
-      fullname: req.body.fullname
-    }
+      fullname: req.body.fullname,
+    };
 
     // Find user by id and updates with the required fields
     const result = await User.findOneAndUpdate(
@@ -79,7 +79,7 @@ const userUpdateCtrl = async (req, res) => {
       {
         new: true, // return the new result instead of the old one
         runValidators: true,
-      }
+      },
     ).exec();
 
     // Send the response
@@ -111,12 +111,12 @@ const userUpdateCtrl = async (req, res) => {
 
 // Delete user instance controller
 // No meaning for deleting the own user instance in real life, expect we are
-// applying some regulations like General Data Protection Regulation (EU GDPR) 
+// applying some regulations like General Data Protection Regulation (EU GDPR)
 const userDeleteCtrl = async (req, res) => {
   try {
     // Find user by ID and DELETE
     const result = await User.findOneAndDelete(req.user).exec();
-    
+
     // If no results found, return user not found
     if (!result) {
       return res.status(404).json({

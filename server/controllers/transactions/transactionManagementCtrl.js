@@ -5,15 +5,10 @@ const transactionCreateCtrl = async (req, res, next) => {
   const { name, amount, notes, transactionType, account, category } = req.body;
   try {
     // Find user
-
     // Find the account
-
     // Create the transaction
-
     // Push the transaction to the account
-
     // Resave the account and send the response
-
   } catch (error) {
     // Catching error
   }
@@ -23,7 +18,6 @@ const transactionCreateCtrl = async (req, res, next) => {
 const transactionUpdateCtrl = async (req, res, next) => {
   try {
     // Find transaction and then update
-
     // send the response
   } catch (error) {
     // Catching error
@@ -34,7 +28,6 @@ const transactionUpdateCtrl = async (req, res, next) => {
 const transactionDeleteCtrl = async (req, res, next) => {
   try {
     // Find transaction and then delete
-
     // send the response
   } catch (error) {
     // Catching error

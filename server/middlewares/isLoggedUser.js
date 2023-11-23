@@ -13,19 +13,20 @@ const isLoggedUser = (req, res, next) => {
 
     next();
   } catch (err) {
-    if(!token || !decodedUser) res.status(401).json({
-      success: false,
-      result: null,
-      message: "Invalid/Expired Token, Please Login again",
-      jwtExpired: true,
-    });
+    if (!token || !decodedUser)
+      res.status(401).json({
+        success: false,
+        result: null,
+        message: "Invalid/Expired Token, Please Login again",
+        jwtExpired: true,
+      });
     else
-    res.status(500).json({
-      success: false,
-      result: null,
-      message: err.message,
-      jwtExpired: true,
-    });
+      res.status(500).json({
+        success: false,
+        result: null,
+        message: err.message,
+        jwtExpired: true,
+      });
   }
 };
 

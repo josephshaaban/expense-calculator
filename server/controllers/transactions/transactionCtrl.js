@@ -2,7 +2,7 @@ const Transaction = require("../../models/Transaction");
 const {
   transactionCreateCtrl,
   transactionUpdateCtrl,
-  transactionDeleteCtrl
+  transactionDeleteCtrl,
 } = require("./transactionManagementCtrl");
 
 // Get all transaction controller
