@@ -7,7 +7,7 @@ const usersRoute = require("./routes/usersRoute");
 const accountsRoute = require("./routes/accountsRoute");
 const transactionsRoute = require("./routes/transactionsRoute");
 
-const globalErrorHandler = require("./middlewares/globalErrorHandler");
+const globalErrorHandler = require("./handlers/globalErrorHandler");
 
 // Load environment variabls from config.env file
 require("dotenv").config({ path: "./config.env" });
