@@ -14,12 +14,12 @@ const transactionsRoute = Router();
 // BASE_URL/transactions
 transactionsRoute.post("/", isLoggedUser, transactionCreateCtrl);
 // BASE_URL/transactions
-transactionsRoute.get("/", transactionGetCtrl);
+transactionsRoute.get("/", isLoggedUser, transactionGetCtrl);
 // BASE_URL/transactions/:ID
-transactionsRoute.get("/:id", transactionByIDCtrl);
+transactionsRoute.get("/:id", isLoggedUser, transactionByIDCtrl);
 // BASE_URL/transactions/:ID
-transactionsRoute.delete("/:id", transactionDeleteCtrl);
+transactionsRoute.delete("/:id", isLoggedUser, transactionDeleteCtrl);
 // BASE_URL/transactions/:ID
-transactionsRoute.put("/:id", transactionUpdateCtrl);
+transactionsRoute.patch("/:id", isLoggedUser, transactionUpdateCtrl);
 
 module.exports = transactionsRoute;

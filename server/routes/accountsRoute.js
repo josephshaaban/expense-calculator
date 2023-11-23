@@ -13,12 +13,12 @@ const accountsRoute = Router();
 // BASE_URL/accounts
 accountsRoute.post("/", isLoggedUser, accountCreateCtrl);
 // BASE_URL/accounts/:ID
-accountsRoute.get("/:id", accountByIDCtrl);
+accountsRoute.get("/:id", isLoggedUser, accountByIDCtrl);
 // BASE_URL/accounts/
-accountsRoute.get("/", accountGetAllCtrl);
+accountsRoute.get("/", isLoggedUser, accountGetAllCtrl);
 // BASE_URL/accounts/:ID
-accountsRoute.delete("/:id", accountDeleteCtrl);
+accountsRoute.delete("/:id", isLoggedUser, accountDeleteCtrl);
 // BASE_URL/accounts/:ID
-accountsRoute.put("/:id", accountUpdateCtrl);
+accountsRoute.patch("/:id", isLoggedUser, accountUpdateCtrl);
 
 module.exports = accountsRoute;
