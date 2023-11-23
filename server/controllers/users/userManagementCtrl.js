@@ -47,7 +47,7 @@ const userRegisterCtrl = async (req, res) => {
     // Server Error
     res.status(500).json({
       success: false,
-      result: null,
+      data: null,
       message: err.message,
     });
   }
@@ -86,13 +86,13 @@ const userUpdateCtrl = async (req, res) => {
     if (!result) {
       return res.status(404).json({
         success: false,
-        result: null,
+        data: null,
         message: "No user found by this id: " + req.user._id,
       });
     }
     return res.status(200).json({
       success: true,
-      result: {
+      data: {
         _id: result._id,
         email: result.email,
         fullname: result.fullname,
@@ -103,7 +103,7 @@ const userUpdateCtrl = async (req, res) => {
     // Server Error
     res.status(500).json({
       success: false,
-      result: null,
+      data: null,
       message: err.message,
     });
   }
@@ -121,13 +121,13 @@ const userDeleteCtrl = async (req, res) => {
     if (!result) {
       return res.status(404).json({
         success: false,
-        result: null,
+        data: null,
         message: "No user found by this id: " + req.user._id,
       });
     } else {
       return res.status(200).json({
         success: true,
-        result,
+        data: result,
         message: "Successfully Deleted the user by id: " + req.user._id,
       });
     }
@@ -135,7 +135,7 @@ const userDeleteCtrl = async (req, res) => {
     // Server Error
     res.status(500).json({
       success: false,
-      result: null,
+      data: null,
       message: err.message,
     });
   }

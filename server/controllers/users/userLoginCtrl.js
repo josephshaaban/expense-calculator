@@ -17,7 +17,7 @@ const userLoginCtrl = async (req, res) => {
     if (!user)
       return res.status(400).json({
         success: false,
-        result: null,
+        data: null,
         message: "No account with this email has been registered.",
       });
 
@@ -26,7 +26,7 @@ const userLoginCtrl = async (req, res) => {
     if (!correctPw)
       return res.status(400).json({
         success: false,
-        result: null,
+        data: null,
         message: "Invalid credentials.",
       });
 
@@ -42,7 +42,7 @@ const userLoginCtrl = async (req, res) => {
     // Send the response
     res.json({
       success: true,
-      result: {
+      data: {
         token,
         user: {
           _id: result._id,
@@ -57,7 +57,7 @@ const userLoginCtrl = async (req, res) => {
     // Catching server error
     res
       .status(500)
-      .json({ success: false, result: null, message: err.message });
+      .json({ success: false, data: null, message: err.message });
   }
 };
 

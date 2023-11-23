@@ -16,14 +16,14 @@ const isLoggedUser = (req, res, next) => {
     if (!token || !decodedUser)
       res.status(401).json({
         success: false,
-        result: null,
+        data: null,
         message: "Invalid/Expired Token, Please Login again",
         jwtExpired: true,
       });
     else
       res.status(500).json({
         success: false,
-        result: null,
+        data: null,
         message: err.message,
         jwtExpired: true,
       });

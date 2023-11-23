@@ -38,14 +38,14 @@ router.post("/", async (req, res) => {
 
     res.json({
       success: true,
-      result: { link: link },
+      data: { link: link },
       message: "password reset link sent to your email account",
     });
   } catch (err) {
     // Catching server Error
     res.status(500).json({
       success: false,
-      result: null,
+      data: null,
       message: err.message,
     });
   }
@@ -61,7 +61,7 @@ router.post("/:userId/:token", async (req, res) => {
     if (!user)
       return res.status(400).json({
         success: false,
-        result: null,
+        data: null,
         message: "Invalid link or expired",
       });
 
@@ -72,7 +72,7 @@ router.post("/:userId/:token", async (req, res) => {
     if (!token)
       return res.status(400).json({
         success: false,
-        result: null,
+        data: null,
         message: "Invalid link or expired",
       });
 
@@ -90,7 +90,7 @@ router.post("/:userId/:token", async (req, res) => {
     // Catching server Error
     res.status(500).json({
       success: false,
-      result: null,
+      data: null,
       message: err.message,
     });
   }

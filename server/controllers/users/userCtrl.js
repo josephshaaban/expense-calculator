@@ -20,13 +20,13 @@ const userProfileCtrl = async (req, res) => {
     // Send the response
     res.json({
       success: true,
-      result: user,
+      data: user,
     });
   } catch (err) {
     // Catching server Error
     res.status(500).json({
       success: false,
-      result: null,
+      data: null,
       message: err.message,
     });
   }
