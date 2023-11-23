@@ -11,7 +11,12 @@ const accountByIDCtrl = async (req, res, next) => {
     // Find and get the id from params
     // Send the response
   } catch (error) {
-    // Catching error
+    // Server Error
+    res.status(500).json({
+      success: false,
+      data: null,
+      message: err.message,
+    });
   }
 };
 
@@ -21,7 +26,12 @@ const accountGetAllCtrl = async (req, res, next) => {
     // Find and get all accounts
     // Send the response
   } catch (error) {
-    // Catching error
+    // Server Error
+    res.status(500).json({
+      success: false,
+      data: null,
+      message: err.message,
+    });
   }
 };
 

@@ -9,7 +9,11 @@ const isLoggedUser = (req, res, next) => {
     // Verify token
     decodedUser = verifyToken(token);
     // save the user into req object
-    req.user = { email: decodedUser.email, _id: decodedUser._id };
+    req.user = {
+      email: decodedUser.email,
+      _id: decodedUser._id,
+      id: decodedUser._id,
+    };
 
     next();
   } catch (err) {
