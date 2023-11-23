@@ -4,6 +4,7 @@ const cors = require("cors");
 const path = require("path");
 
 const usersRoute = require("./routes/usersRoute");
+const passwordReset = require("./routes/passwordReset");
 const accountsRoute = require("./routes/accountsRoute");
 const transactionsRoute = require("./routes/transactionsRoute");
 
@@ -24,6 +25,7 @@ const conn = require("./config/connection");
 
 // Routes
 app.use(`${API_URI}/users`, usersRoute);
+app.use(`${API_URI}/password-reset`, passwordReset);
 app.use(`${API_URI}/accounts`, accountsRoute);
 app.use(`${API_URI}/transactions`, transactionsRoute);
 

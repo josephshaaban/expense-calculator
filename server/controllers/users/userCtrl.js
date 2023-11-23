@@ -10,7 +10,7 @@ const {
 const userProfileCtrl = async (req, res) => {
   try {
     // Get user profile by user ID
-    const user = await User.findById(req.user).populate({
+    const user = await User.findById(req.user._id).populate({
       path: "accounts",
       populate: {
         path: "transactions",
@@ -18,7 +18,10 @@ const userProfileCtrl = async (req, res) => {
       },
     });
     // Send the response
-    res.json(user);
+    res.json({
+      success: true,
+      result: user,
+    });
   } catch (err) {
     // Catching server Error
     res.status(500).json({
