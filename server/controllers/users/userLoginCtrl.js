@@ -55,9 +55,7 @@ const userLoginCtrl = async (req, res) => {
     });
   } catch (err) {
     // Catching server error
-    res
-      .status(500)
-      .json({ success: false, data: null, message: err.message });
+    res.status(500).json({ success: false, data: null, message: err.message });
   }
 };
 

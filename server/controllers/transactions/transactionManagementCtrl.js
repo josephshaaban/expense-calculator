@@ -35,7 +35,7 @@ const transactionCreateCtrl = async (req, res, next) => {
       createdBy: req.user._id,
     });
     const savedTransaction = newTransaction.save();
-    
+
     // Push the transaction to the account
     accountFound.transactions.push(savedTransaction._id);
     // Resave the account and send the response
