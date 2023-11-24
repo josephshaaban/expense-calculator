@@ -14,6 +14,7 @@ import { TextInput } from "react-native-paper";
 
 import Colors from "../../constants/Colors";
 import Config from "../../constants/Config";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
@@ -77,12 +78,16 @@ const RegisterScreen = () => {
             };
           });
         if (data && data.success) {
-          // await AsyncStorage.setItem("user", JSON.stringify(data.user));
-          // await AsyncStorage.setItem("userId", data.user._id);
+          await AsyncStorage.setItem("user", JSON.stringify(data.user));
+          await AsyncStorage.setItem("userId", data.user._id);
+
+          setEmail("");
+          setName("");
+          setPassword("");
 
           navigation.reset({
             index: 0,
-            routes: [{ name: "MainNavigator" }],
+            routes: [{ name: "LoginScreen" }],
           });
           return true;
         }
@@ -91,9 +96,6 @@ const RegisterScreen = () => {
         Alert.alert("Error!", err.response.data.message);
         return false;
       } finally {
-        // setEmail("");
-        // setName("");
-        // setPassword("");
         setLoading(false);
       }
     }
