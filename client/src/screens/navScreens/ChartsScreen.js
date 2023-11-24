@@ -1,17 +1,17 @@
 import { Text, View } from "react-native";
 
-const ProfileScreen = () => {
+const ChartsScreen = () => {
   return (
     <View style={{ flex: 1 }}>
       <View
         style={{ flex: 0.25, alignItems: "center", justifyContent: "center" }}
       >
         <Text style={{ color: "white", fontSize: 24, fontWeight: "700" }}>
-          ProfileScreen is under constructing..
+          ChartsScreen is under constructing..
         </Text>
       </View>
     </View>
   );
 };
 
-export default ProfileScreen;
+export default ChartsScreen;
