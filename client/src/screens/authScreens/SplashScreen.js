@@ -1,11 +1,10 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Colors from "../../constants/Colors";
-import { useNavigation } from "@react-navigation/native";
 
 const SplashScreen = () => {
-
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   return (
     <View style={{ flex: 1 }}>

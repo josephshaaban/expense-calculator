@@ -1,8 +1,9 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
-import SplashScreen from "../screens/authScreens/SplashScreen";
 import LoginScreen from "../screens/authScreens/LoginScreen";
 import RegisterScreen from "../screens/authScreens/RegisterScreen";
+import SplashScreen from "../screens/authScreens/SplashScreen";
+import MainNavigator from "./MainNavigator";
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,11 @@ function AuthNavigator() {
         name="LoginScreen"
         component={LoginScreen}
         options={{ headerTitle: "", headerStyle: { backgroundColor: "black" } }}
+      />
+      <Stack.Screen
+        name="MainNavigator"
+        component={MainNavigator}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
