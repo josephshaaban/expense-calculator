@@ -30,11 +30,11 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    // user can have many accounts so using "Referencing"
-    accounts: [
+    // user can have many transaction so using "Referencing"
+    transactions: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Account",
+        ref: "Transaction",
       },
     ],
   },
