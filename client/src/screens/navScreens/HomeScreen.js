@@ -52,7 +52,7 @@ const HomeScreen = () => {
       {
         _id: 1,
         amount: 14,
-        transactionType: "Expenses",
+        transactionType: "Expense",
         name: "Hashtag lunch",
         category: "Food",
         notes: "Yummy",
