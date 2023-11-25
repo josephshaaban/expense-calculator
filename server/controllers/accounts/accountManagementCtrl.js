@@ -33,7 +33,7 @@ const accountCreateCtrl = async (req, res, next) => {
       success: true,
       data: savedAccount,
     });
-  } catch (error) {
+  } catch (err) {
     // Server Error
     res.status(500).json({
       success: false,

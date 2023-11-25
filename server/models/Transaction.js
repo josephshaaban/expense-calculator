@@ -30,6 +30,7 @@ const transactionSchema = new Schema(
         "Personal",
         "Groceries",
         "Bills",
+        "Salary",
         "Uncategorized",
       ],
       required: true,
