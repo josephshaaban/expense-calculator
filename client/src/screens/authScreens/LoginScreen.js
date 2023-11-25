@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -14,6 +14,7 @@ import { TextInput } from "react-native-paper";
 
 import Colors from "../../constants/Colors";
 import Config from "../../constants/Config";
+import { AppStateContext } from "../../../AppStateContext";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -21,6 +22,8 @@ const LoginScreen = () => {
   const [password, setPassword] = useState("User@1234");
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  const { setCurrentUser, setUserToken } = useContext(AppStateContext);
 
   const login = async () => {
     const LOGIN_URL = `${Config.API_USERS_URL}/login`;
@@ -80,13 +83,12 @@ const LoginScreen = () => {
           await AsyncStorage.setItem("user", JSON.stringify(data.data.user));
           await AsyncStorage.setItem("userId", data.data.user._id);
 
+          await setCurrentUser(data?.data.user);
+          await setUserToken(data?.data.token);
+
           setEmail("");
           setPassword("");
-
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "MainNavigator" }],
-          });
+          
           return true;
         }
         return false;

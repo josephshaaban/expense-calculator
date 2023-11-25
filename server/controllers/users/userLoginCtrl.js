@@ -46,8 +46,8 @@ const userLoginCtrl = async (req, res) => {
         token,
         user: {
           _id: result._id,
-          id: result._id,
-          name: result.name,
+          fullname: result.fullname,
+          email: result.email,
           isLoggedIn: result.isLoggedIn,
         },
       },

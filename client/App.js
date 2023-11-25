@@ -1,10 +1,13 @@
-import { StatusBar } from "expo-status-bar";
-import { NavigationContainer, DarkTheme } from "@react-navigation/native";
-
-import AuthNavigator from "./src/navigators/AuthNavigator";
-import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { DarkTheme, NavigationContainer } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
+import { useEffect, useState } from "react";
+import { Alert } from "react-native";
+
+import { AppStateContext } from "./AppStateContext";
+import AuthNavigator from "./src/navigators/AuthNavigator";
 import MainNavigator from "./src/navigators/MainNavigator";
+import { deleteAllData } from "./developmentHelpers";
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -12,27 +15,31 @@ export default function App() {
 
   const fetchCurrentUser = async () => {
     try {
-      const user = await AsyncStorage.getItem("user");
+      const user = JSON.parse(await AsyncStorage.getItem("user"));
       const token = await AsyncStorage.getItem("userToken");
-      if (token && user) {
-        setUserToken(token);
+      if (user && token) {
         setCurrentUser(user);
-      } else {
-        throw Error("No logged user!");
+        setUserToken(token);
       }
     } catch (err) {
       Alert.alert("Error!", err.message);
     }
   };
 
+  // deleteAllData();
+
   useEffect(() => {
     fetchCurrentUser();
   }, [userToken, currentUser]);
 
   return (
-    <NavigationContainer theme={DarkTheme}>
-      <StatusBar style="light" />
-      {userToken ? <MainNavigator /> : <AuthNavigator />}
-    </NavigationContainer>
+    <AppStateContext.Provider
+      value={{ currentUser, userToken, setCurrentUser, setUserToken }}
+    >
+      <NavigationContainer theme={DarkTheme}>
+        <StatusBar style="light" />
+        {(currentUser && userToken) ? <MainNavigator /> : <AuthNavigator />}
+      </NavigationContainer>
+    </AppStateContext.Provider>
   );
 }

@@ -3,9 +3,9 @@ Develop a simple expense calculator application that allows users to manage thei
 
 ## Tasks:
 ## Backend Development (Node.js)
-### &#x2610; User Authentication
+### &#x2611; User Authentication
 - &#x2611; Implement user registration functionality, including user information collection(name, email, password).
-- &#x2610; Create a login page for registered users.
+- &#x2611; Create a login page for registered users.
 - &#x2611; Implement a password reset feature allowing users to reset their passwords viaemail.
 ### &#x2610; Expense Management
 - &#x2610; Develop a user-friendly interface for users to add, edit, and delete expenses.
@@ -21,7 +21,7 @@ Develop a simple expense calculator application that allows users to manage thei
 ## &#x2610;Mobile Frontend (React Native)
 Develop a mobile application using React Native.
 - &#x2610; Ensure the mobile app offers a seamless and user-friendly experience on bothiOS and Android platforms.
-- &#x2610; Ensure that the mobile app communicates effectively with the chosen backendtechnology (Node.js).
+- &#x2611; Ensure that the mobile app communicates effectively with the chosen backendtechnology (Node.js).
 ## &#x2610; Backend Development (Node.js or Laravel)
 - &#x2610; Implement the backend logic for user authentication, expense management, andgenerating reports.
 - &#x2610; Ensure secure communication between the frontend and backend.

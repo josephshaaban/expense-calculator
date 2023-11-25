@@ -19,7 +19,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const RegisterScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("test.user@gmail.com");
-  const [name, setName] = useState("Test User");
+  const [fullname, setFullName] = useState("Test User");
   const [password, setPassword] = useState("User@1234");
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -27,7 +27,7 @@ const RegisterScreen = () => {
   const register = async () => {
     const REGISTER_URL = `${Config.API_USERS_URL}/register`;
 
-    if (email.trim() == "" || name.trim() == "" || password.trim() == "") {
+    if (email.trim() == "" || fullname.trim() == "" || password.trim() == "") {
       Alert.alert("Error!", "Inputs cannot be empty");
     } else if (password.trim().length < 8) {
       Alert.alert("Error!", "Password must be atleast 8 characters");
@@ -39,7 +39,7 @@ const RegisterScreen = () => {
           .post(
             REGISTER_URL,
             {
-              name: name.trim(),
+              fullname: fullname.trim(),
               email: email.trim(),
               password: password.trim(),
               passwordCheck: password.trim(),
@@ -82,7 +82,7 @@ const RegisterScreen = () => {
           await AsyncStorage.setItem("userId", data.user._id);
 
           setEmail("");
-          setName("");
+          setFullName("");
           setPassword("");
 
           navigation.reset({
@@ -151,8 +151,8 @@ const RegisterScreen = () => {
             />
           }
           theme={{ colors: { text: "white" } }}
-          value={name}
-          onChangeText={(name) => setName(name)}
+          value={fullname}
+          onChangeText={(fullname) => setFullName(fullname)}
         />
         <View style={styles.innerMargin} />
         <TextInput
