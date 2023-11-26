@@ -38,7 +38,6 @@ const transactionSchema = new Schema(
         "Investments",
         "Selling",
         "Uncategorized",
-        "Salary",
       ],
       required: true,
     },
