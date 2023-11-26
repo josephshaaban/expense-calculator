@@ -1,8 +1,9 @@
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import LottieView from 'lottie-react-native';
+import LottieView from "lottie-react-native";
 import { useEffect, useState } from "react";
 import {
+  Alert,
   FlatList,
   Image,
   StatusBar,
@@ -15,8 +16,15 @@ import Feather from "react-native-vector-icons/Feather";
 import NoResults from "../../components/NoResults";
 import TransactionItem from "../../components/TransactionItem";
 import Colors from "../../constants/Colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import Config from "../../constants/Config";
+import { ProgressBar } from "react-native-paper";
 
 const HomeScreen = () => {
+  const GET_BALANCE = `${Config.API_URL}/transactions/balance`;
+  const GET_TRANSACTIONS_URL = `${Config.API_URL}/transactions/`;
+
   const focused = useIsFocused();
   const navigation = useNavigation();
 
@@ -27,70 +35,83 @@ const HomeScreen = () => {
   const [refresh, setRefresh] = useState(false);
 
   const fetchBalance = async () => {
-    setBalance(777);
     setRefresh(false);
     setBalanceLoading(false);
-    // const userId = await AsyncStorage.getItem("userId");
-    // try {
-    //   setBalanceLoading(true);
-    //   await axios
-    //     .get(`${Config.API_URL}/user/${userId}/balance`)
-    //     .then((response) => {
-    //       setBalance(response.data.balance);
-    //     });
-    //   return true;
-    // } catch (e) {
-    //   Alert.alert("Error!", "Cannot fetch balance");
-    //   return false;
-    // } finally {
-    //   setRefresh(false);
-    //   setBalanceLoading(false);
-    // }
+    try {
+      const userToken = await AsyncStorage.getItem("userToken");
+      setBalanceLoading(true);
+      await axios
+        .get(GET_BALANCE, {
+          headers: {
+            Authorization: `Token ${userToken}`,
+          },
+        })
+        .then((response) => {
+          setBalance(response.data.data.balance);
+        })
+        .catch((err) => {
+          if (err.response) {
+            console.log(err.response);
+            Alert.alert(
+              `Error! ${err.response.status}`,
+              err.response?.data.message
+            );
+          } else if (err.request) {
+            console.log(err.request);
+          }
+
+          setTransactions([]);
+          return false;
+        });
+      return true;
+    } catch (e) {
+      Alert.alert("Error!", "Cannot fetch balance");
+      return false;
+    } finally {
+      setRefresh(false);
+      setBalanceLoading(false);
+    }
   };
 
   const fetchTransactions = async () => {
-    setTransactions([
-      {
-        _id: 1,
-        amount: 14,
-        transactionType: "Expense",
-        name: "Hashtag lunch",
-        category: "Food",
-        notes: "Yummy",
-        timestamp: 1700916040,
-      },
-      {
-        _id: 2,
-        amount: 28,
-        transactionType: "Income",
-        name: "CodeGuru first salary",
-        category: "Salary",
-        notes: "Wow, good job! good salary!",
-        timestamp: 1700916040,
-      },
-    ]);
-    setRefresh(false);
-    setLoading(false);
-    // const userId = await AsyncStorage.getItem("userId");
-    // try {
-    //   setLoading(true);
-    //   await axios
-    //     .get(`${Config.API_URL}/user/${userId}`)
-    //     .then((response) => {
-    //       var json = response.data.transactions.transactions;
-    //       setTransactions([...json.reverse()]);
-    //     });
-    //   return true;
-    // } catch (e) {
-    //   Alert.alert(
-    //     "Error!",
-    //     "Cannot load transactions! Please check your internet connection"
-    //   );
-    //   return false;
-    // } finally {
-    //   setRefresh(false);
-    //   setLoading(false);
-    // }
+    try {
+      const userToken = await AsyncStorage.getItem("userToken");
+      setLoading(true);
+      await axios
+        .get(GET_TRANSACTIONS_URL, {
+          headers: {
+            Authorization: `Token ${userToken}`,
+          },
+        })
+        .then((response) => {
+          var json = response.data.data;
+          setTransactions([...json.reverse()]);
+        })
+        .catch((err) => {
+          if (err.response) {
+            console.log(err.response);
+            Alert.alert(
+              `Error! ${err.response.status}`,
+              err.response?.data.message
+            );
+          } else if (err.request) {
+            console.log(err.request);
+          }
+
+          setTransactions([]);
+          return false;
+        });
+      return true;
+    } catch (e) {
+      Alert.alert(
+        "Error!",
+        "Cannot load transactions! Please check your internet connection"
+      );
+      return false;
+    } finally {
+      setRefresh(false);
+      setLoading(false);
+    }
   };
 
   const onRefresh = () => {
