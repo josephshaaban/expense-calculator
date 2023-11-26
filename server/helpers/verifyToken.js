@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 // Load secret key from config file
 const SECRET_KEY = process.env.SECRET_KEY || "secretOrPrivateKey";
-const EXPIRATION = process.env.EXPIRATION || "2h";
+const EXPIRATION = process.env.EXPIRATION || "24h";
 
 const verifyToken = (token) => {
   // return callback function holds the user

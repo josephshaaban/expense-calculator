@@ -1,121 +1,95 @@
 import { Picker } from "@react-native-picker/picker";
 import { DarkTheme, useIsFocused } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import { FlatList, StatusBar, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  FlatList,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import Colors from "../../constants/Colors";
 import TransactionItem from "../../components/TransactionItem";
 import NoResults from "../../components/NoResults";
 import Config from "../../constants/Config";
 import { Searchbar } from "react-native-paper";
+import TypeCategoryPicker from "../../components/typeCategoryPicker";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import LottieView from "lottie-react-native";
 
 const TransactionsScreen = () => {
+  const GET_TRANSACTIONS_URL = `${Config.API_URL}/transactions/`;
+  const SEARCH_TRANSACTIONS_URL = `${Config.API_URL}/transactions/search`;
   const isFocused = useIsFocused();
+
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
+  const [type, setType] = useState("");
+  const [category, setCategory] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
   const onChangeSearch = (query) => setSearchQuery(query);
 
   const fetchTransactions = async (query) => {
-    if (query)
-      setTransactions([
-        {
-          _id: 2,
-          amount: 28,
-          transactionType: "Income",
-          name: "CodeGuru first salary",
-          category: "Salary",
-          notes: "Wow, good job! good salary!",
-          timestamp: 1700916040,
-        },
-      ]);
-    else
-      setTransactions([
-        {
-          _id: 1,
-          amount: 14,
-          transactionType: "Expense",
-          name: "Hashtag lunch",
-          category: "Food",
-          notes: "Yummy",
-          timestamp: 1700916040,
-        },
-        {
-          _id: 2,
-          amount: 28,
-          transactionType: "Income",
-          name: "CodeGuru first salary",
-          category: "Salary",
-          notes: "Wow, good job! good salary!",
-          timestamp: 1700916040,
-        },
-      ]);
-    setRefresh(false);
-    setLoading(false);
-    // const userId = await AsyncStorage.getItem("userId");
-    // try {
-    //   setLoading(true);
-    //   await axios
-    //     .get(`${Config.API_URL}/transactions`)
-    //     .then((response) => {
-    //       var json = response.data.transactions.transactions;
-    //       setTransactions([...json.reverse()]);
-    //     });
-    //   return true;
-    // } catch (e) {
-    //   Alert.alert(
-    //     "Error!",
-    //     "Cannot load transactions! Please check your internet connection"
-    //   );
-    //   return false;
-    // } finally {
-    //   setRefresh(false);
-    //   setLoading(false);
-    // }
+    let url = query
+      ? `${SEARCH_TRANSACTIONS_URL}/${query}`
+      : GET_TRANSACTIONS_URL;
+    try {
+      const userToken = await AsyncStorage.getItem("userToken");
+      setLoading(true);
+      await axios
+        .get(url, {
+          headers: {
+            Authorization: `Token ${userToken}`,
+          },
+        })
+        .then((response) => {
+          var json = response.data.data;
+          setTransactions([...json.reverse()]);
+        })
+        .catch((err) => {
+          if (err.response) {
+            console.log(err.response);
+            Alert.alert(
+              `Error! ${err.response.status}`,
+              err.response?.data.message
+            );
+          } else if (err.request) {
+            console.log(err.request);
+          }
+
+          setTransactions([]);
+          return false;
+        });
+      return true;
+    } catch (e) {
+      Alert.alert(
+        "Error!",
+        "Cannot load transactions! Please check your internet connection"
+      );
+      return false;
+    } finally {
+      setRefresh(false);
+      setLoading(false);
+    }
   };
 
   const onRefresh = () => {
     setType("");
     setCategory("");
     setRefresh(true);
-    fetchTransactions();
+    fetchTransactions(searchQuery);
   };
 
   useEffect(() => {
     isFocused && fetchTransactions(searchQuery);
   }, [isFocused, searchQuery]);
 
-  const [type, setType] = useState("");
-  const [category, setCategory] = useState("");
-  const incomePickerItems = [
-    "Salary",
-    "Allowance",
-    "Commission",
-    "Gifts",
-    "Interests",
-    "Investments",
-    "Selling",
-    "Uncategorized",
-  ];
-  const expensePickerItems = [
-    "Food",
-    "Transportation",
-    "Entertainment",
-    "Shopping",
-    "Utilities",
-    "Health",
-    "Travel",
-    "Education",
-    "Personal",
-    "Groceries",
-    "Bills",
-    "Uncategorized",
-  ];
-
   const getFilteredTransactions = () => {
-    console.log(type !== "" && category !== "", category);
     if (type !== "" && category == "")
       return transactions.filter((item) => item.transactionType === type);
     if (type !== "" && category !== "")
@@ -161,75 +135,10 @@ const TransactionsScreen = () => {
       />
       <View style={{ height: 20 }} />
 
-      <Picker
-        style={styles.picker}
-        mode="dropdown"
-        dropdownIconColor={Colors.DARK_GRAY}
-        selectedValue={type}
-        onValueChange={(val) => setType(val)}
-      >
-        <Picker.Item
-          label="Select Type"
-          value=""
-          style={{ backgroundColor: Colors.DARK, color: Colors.DARK_GRAY }}
-        />
-        <Picker.Item label="Income" value="Income" style={styles.pickerItem} />
-        <Picker.Item
-          label="Expense"
-          value="Expense"
-          style={styles.pickerItem}
-        />
-      </Picker>
-      <View style={styles.innerMargin} />
-      {type == "Income" ? (
-        <Picker
-          style={styles.picker}
-          mode="dropdown"
-          dropdownIconColor={Colors.DARK_GRAY}
-          selectedValue={category}
-          onValueChange={(val) => setCategory(val)}
-        >
-          <Picker.Item
-            label="Select Income Category"
-            value=""
-            style={{ backgroundColor: Colors.DARK, color: Colors.DARK_GRAY }}
-          />
-          {incomePickerItems.map((item, index) => {
-            return (
-              <Picker.Item
-                label={item}
-                value={item}
-                key={index}
-                style={styles.pickerItem}
-              />
-            );
-          })}
-        </Picker>
-      ) : type == "Expense" ? (
-        <Picker
-          style={styles.picker}
-          mode="dropdown"
-          dropdownIconColor={Colors.DARK_GRAY}
-          selectedValue={category}
-          onValueChange={(val) => setCategory(val)}
-        >
-          <Picker.Item
-            label="Select Expense Category"
-            value="category"
-            style={{ backgroundColor: Colors.DARK, color: Colors.DARK_GRAY }}
-          />
-          {expensePickerItems.map((item, index) => {
-            return (
-              <Picker.Item
-                label={item}
-                value={item}
-                key={index}
-                style={styles.pickerItem}
-              />
-            );
-          })}
-        </Picker>
-      ) : null}
+      <TypeCategoryPicker
+        setTypeCallback={setType}
+        setCategoryCallback={setCategory}
+      />
       <View style={styles.innerMargin} />
       <View style={styles.innerMargin} />
       <View style={{ flex: 0.9 }}>

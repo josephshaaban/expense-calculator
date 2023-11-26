@@ -26,8 +26,13 @@ const transactionsRoute = Router();
 transactionsRoute.post("/", isLoggedUser, transactionCreateCtrl);
 // BASE_URL/transactions
 transactionsRoute.get("/", isLoggedUser, transactionGetCtrl);
-// BASE_URL/transactions/search/:ID
-transactionsRoute.get("/search/:searchIn", isLoggedUser, transactionSearchCtrl);
+// BASE_URL/transactions/search/:searchValue/:searchIn?
+transactionsRoute.get(
+  "/search/:searchValue/:searchIn?",
+  isLoggedUser,
+  transactionSearchCtrl,
+);
+
 // BASE_URL/transactions/:ID
 transactionsRoute.delete("/:id", isLoggedUser, transactionDeleteCtrl);
 // BASE_URL/transactions/:ID

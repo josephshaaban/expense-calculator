@@ -1,5 +1,6 @@
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import LottieView from 'lottie-react-native';
 import { useEffect, useState } from "react";
 import {
   FlatList,

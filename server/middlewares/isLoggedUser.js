@@ -14,6 +14,7 @@ const isLoggedUser = (req, res, next) => {
       _id: decodedUser._id,
       id: decodedUser._id,
     };
+    console.log("[SERVER] Logged user:", decodedUser)
 
     next();
   } catch (err) {

@@ -1,6 +1,7 @@
 const Transaction = require("../../models/Transaction");
 const user = require("../../models/User");
 const account = require("../../models/Account");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 const {
   transactionCreateCtrl,
@@ -33,30 +34,50 @@ const transactionGetCtrl = async (req, res, next) => {
 
 const transactionSearchCtrl = async (req, res, next) => {
   try {
-    const { searchIn } = req.params;
-    const { searchValue } = req.body;
-    console.log(searchIn);
-    console.log(searchValue);
+    const { searchValue } = req.params;
+    const userObjectId = new ObjectId(req.user._id);
+    console.log(!req.params.searchIn, searchValue, userObjectId);
     let transactions = [];
-    if (searchIn == "date") {
+
+    // Prepare searchValue for date search
+    let dateParam = new Date(searchValue);
+    let minDateParam = 0;
+    let maxDateParam = 0;
+    if (!isNaN(dateParam)) {
+      minDateParam = dateParam - 82800000;
+      maxDateParam = dateParam + 82800000;
+    }
+
+    if (!req.params.searchIn) {
+      transactions = await Transaction.find({
+        createdBy: userObjectId,
+        $or: [
+          { name: { $regex: searchValue, $options: "i" } },
+          { category: { $regex: searchValue, $options: "i" } },
+          { date: { $gte: minDateParam, $lt: maxDateParam } },
+          { notes: { $regex: searchValue, $options: "i" } },
+        ],
+      })
+        // .searchByText(searchValue)
+        .exec();
+      console.log(transactions);
+    } else if (req.params.searchIn == "date") {
       transactions = await Transaction.find({
         createdBy: req.user._id,
         date: { $regex: searchValue, $options: "i" },
       });
-    } else if (searchIn == "notes") {
+    } else if (req.params.searchIn == "notes") {
       transactions = await Transaction.find({
         createdBy: req.user._id,
         notes: { $regex: searchValue, $options: "i" },
       });
-    } else if (searchIn == "category") {
+    } else if (req.params.searchIn == "category") {
       transactions = await Transaction.find({
         createdBy: req.user._id,
         category: { $regex: searchValue, $options: "i" },
       });
     } else {
-      transactions = await Transaction.find({
-        createdBy: req.user._id,
-      });
+      transactions = [];
     }
 
     res.status(200).json({ success: true, data: transactions });

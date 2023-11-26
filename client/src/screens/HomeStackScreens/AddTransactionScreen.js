@@ -1,4 +1,7 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import { useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -7,40 +10,14 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Colors from "../../constants/Colors";
 import { TextInput } from "react-native-paper";
-import { useState } from "react";
-import { Picker } from "@react-native-picker/picker";
+import TypeCategoryPicker from "../../components/typeCategoryPicker";
+import Colors from "../../constants/Colors";
 import Config from "../../constants/Config";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 
 const AddTransactionScreen = () => {
   const ADD_TRANSACTION_URL = `${Config.API_URL}/transactions/`;
-  const incomePickerItems = [
-    "Salary",
-    "Allowance",
-    "Commission",
-    "Gifts",
-    "Interests",
-    "Investments",
-    "Selling",
-    "Uncategorized",
-  ];
-  const expensePickerItems = [
-    "Food",
-    "Transportation",
-    "Entertainment",
-    "Shopping",
-    "Utilities",
-    "Health",
-    "Travel",
-    "Education",
-    "Personal",
-    "Groceries",
-    "Bills",
-    "Uncategorized",
-  ];
+
   const navigation = useNavigation();
 
   const [name, setName] = useState("new Food");
@@ -63,15 +40,7 @@ const AddTransactionScreen = () => {
         const userToken = await AsyncStorage.getItem("userToken");
 
         var updatedAmount = amount;
-        if (type == "Income") {
-          if (updatedAmount < 0) {
-            updatedAmount = updatedAmount * -1;
-          }
-        } else if (type == "Expense") {
-          if (updatedAmount > 0) {
-            updatedAmount = updatedAmount * -1;
-          }
-        }
+        if (updatedAmount < 0) updatedAmount = updatedAmount * -1;
 
         const { data } = await axios
           .post(
@@ -86,7 +55,7 @@ const AddTransactionScreen = () => {
             {
               headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Token ${userToken}`,
+                Authorization: `Token ${userToken}`,
               },
             }
           )
@@ -201,79 +170,10 @@ const AddTransactionScreen = () => {
         />
         <View style={styles.innerMargin} />
         <View style={styles.innerMargin} />
-        <Picker
-          style={styles.picker}
-          mode="dropdown"
-          dropdownIconColor={Colors.DARK_GRAY}
-          selectedValue={type}
-          onValueChange={(val) => setType(val)}
-        >
-          <Picker.Item
-            label="Select Type"
-            value="type"
-            style={{ backgroundColor: Colors.DARK, color: Colors.DARK_GRAY }}
-          />
-          <Picker.Item
-            label="Income"
-            value="Income"
-            style={styles.pickerItem}
-          />
-          <Picker.Item
-            label="Expense"
-            value="Expense"
-            style={styles.pickerItem}
-          />
-        </Picker>
-        <View style={styles.innerMargin} />
-        {type == "Income" ? (
-          <Picker
-            style={styles.picker}
-            mode="dropdown"
-            dropdownIconColor={Colors.DARK_GRAY}
-            selectedValue={category}
-            onValueChange={(val) => setCategory(val)}
-          >
-            <Picker.Item
-              label="Select Income Category"
-              value="category"
-              style={{ backgroundColor: Colors.DARK, color: Colors.DARK_GRAY }}
-            />
-            {incomePickerItems.map((item, index) => {
-              return (
-                <Picker.Item
-                  label={item}
-                  value={item}
-                  key={index}
-                  style={styles.pickerItem}
-                />
-              );
-            })}
-          </Picker>
-        ) : type == "Expense" ? (
-          <Picker
-            style={styles.picker}
-            mode="dropdown"
-            dropdownIconColor={Colors.DARK_GRAY}
-            selectedValue={category}
-            onValueChange={(val) => setCategory(val)}
-          >
-            <Picker.Item
-              label="Select Expense Category"
-              value="category"
-              style={{ backgroundColor: Colors.DARK, color: Colors.DARK_GRAY }}
-            />
-            {expensePickerItems.map((item, index) => {
-              return (
-                <Picker.Item
-                  label={item}
-                  value={item}
-                  key={index}
-                  style={styles.pickerItem}
-                />
-              );
-            })}
-          </Picker>
-        ) : null}
+        <TypeCategoryPicker
+          setTypeCallback={setType}
+          setCategoryCallback={setCategory}
+        />
         <TouchableOpacity
           style={styles.btnSave}
           onPress={() =>

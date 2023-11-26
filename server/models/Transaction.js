@@ -56,7 +56,6 @@ const transactionSchema = new Schema(
     },
     notes: {
       type: String,
-      required: true,
     },
   },
   {
@@ -64,6 +63,13 @@ const transactionSchema = new Schema(
     toJSON: { virtuals: true },
   },
 );
+
+transactionSchema.index({ "$**": "text" });
+transactionSchema.query.searchByText = function (name) {
+  return this.where({
+    $text: { $search: { text: { query: name} } },
+  });
+};
 
 // Transaction model
 const Transaction = model("Transaction", transactionSchema);
