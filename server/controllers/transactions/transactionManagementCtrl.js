@@ -4,7 +4,8 @@ const Transaction = require("../../models/Transaction");
 
 // Create transaction controller
 const transactionCreateCtrl = async (req, res, next) => {
-  const { name, amount, notes, transactionType, account, category } = req.body;
+  const { name, amount, notes, transactionType, category } = req.body;
+
   try {
     // Find the logged in user
     const userFound = await User.findById(req.user._id);
@@ -15,31 +16,16 @@ const transactionCreateCtrl = async (req, res, next) => {
         message: "No user found by this id: " + req.user._id,
       });
 
-    // Find the account
-    const accountFound = await Account.findById(account);
-    if (!accountFound)
-      return res.status(404).json({
-        success: false,
-        data: null,
-        message: "No Account found for this user",
-      });
-
     // Create the transaction
     const newTransaction = new Transaction({
-      amount,
-      notes,
-      account,
-      transactionType,
-      category,
-      name,
+      amount: amount,
+      notes: notes,
+      transactionType: transactionType,
+      category: category,
+      name: name,
       createdBy: req.user._id,
     });
-    const savedTransaction = newTransaction.save();
-
-    // Push the transaction to the account
-    accountFound.transactions.push(savedTransaction._id);
-    // Resave the account and send the response
-    await accountFound.save();
+    const savedTransaction = await newTransaction.save();
 
     res.status(200).send({
       success: true,

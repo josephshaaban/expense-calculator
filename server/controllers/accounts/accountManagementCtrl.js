@@ -1,4 +1,5 @@
 const Account = require("../../models/Account");
+const User = require("../../models/User");
 
 // Create account controller
 const accountCreateCtrl = async (req, res, next) => {
@@ -14,7 +15,7 @@ const accountCreateCtrl = async (req, res, next) => {
       });
 
     // Create the account
-    const newAccount = new Account.create({
+    const newAccount = new Account({
       name,
       initialBalance,
       accountType,
@@ -38,7 +39,7 @@ const accountCreateCtrl = async (req, res, next) => {
     res.status(500).json({
       success: false,
       data: null,
-      message: err.message,
+      message: error.message,
     });
   }
 };

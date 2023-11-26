@@ -115,7 +115,7 @@ const userUpdateCtrl = async (req, res) => {
 const userDeleteCtrl = async (req, res) => {
   try {
     // Find user by ID and DELETE
-    const result = await User.findOneAndDelete(req.user).exec();
+    const result = await User.findOneAndDelete(req.user._id).exec();
 
     // If no results found, return user not found
     if (!result) {
