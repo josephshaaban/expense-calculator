@@ -61,8 +61,6 @@ const AddTransactionScreen = () => {
       setLoading(true);
       try {
         const userToken = await AsyncStorage.getItem("userToken");
-        const userId = await AsyncStorage.getItem("userId");
-        console.log(userToken);
 
         var updatedAmount = amount;
         if (type == "Income") {
@@ -93,7 +91,7 @@ const AddTransactionScreen = () => {
             }
           )
           .then((res) => {
-            console.log(res?.data);
+            console.log(res.data);
             return res;
           })
           .catch((err) => {
@@ -217,17 +215,17 @@ const AddTransactionScreen = () => {
           />
           <Picker.Item
             label="Income"
-            value="income"
+            value="Income"
             style={styles.pickerItem}
           />
           <Picker.Item
             label="Expense"
-            value="expense"
+            value="Expense"
             style={styles.pickerItem}
           />
         </Picker>
         <View style={styles.innerMargin} />
-        {type == "income" ? (
+        {type == "Income" ? (
           <Picker
             style={styles.picker}
             mode="dropdown"
@@ -251,7 +249,7 @@ const AddTransactionScreen = () => {
               );
             })}
           </Picker>
-        ) : type == "expense" ? (
+        ) : type == "Expense" ? (
           <Picker
             style={styles.picker}
             mode="dropdown"

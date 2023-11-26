@@ -31,7 +31,7 @@ const transactionCreateCtrl = async (req, res, next) => {
       success: true,
       data: savedTransaction,
     });
-  } catch (error) {
+  } catch (err) {
     // Server Error
     res.status(500).json({
       success: false,
@@ -65,7 +65,7 @@ const transactionUpdateCtrl = async (req, res, next) => {
         message: "Successfully Updated the transaction by id: " + id,
       });
     }
-  } catch (error) {
+  } catch (err) {
     // Server Error
     res.status(500).json({
       success: false,
@@ -96,7 +96,7 @@ const transactionDeleteCtrl = async (req, res, next) => {
         message: "Successfully Deleted the transaction by id: " + id,
       });
     }
-  } catch (error) {
+  } catch (err) {
     // Server Error
     res.status(500).json({
       success: false,
