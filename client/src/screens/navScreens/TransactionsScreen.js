@@ -11,7 +11,6 @@ import { Searchbar } from "react-native-paper";
 const TransactionsScreen = () => {
   const isFocused = useIsFocused();
   const [transactions, setTransactions] = useState([]);
-  const [typeFilter, setTypeFilter] = useState();
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
@@ -78,6 +77,8 @@ const TransactionsScreen = () => {
   };
 
   const onRefresh = () => {
+    setType("");
+    setCategory("");
     setRefresh(true);
     fetchTransactions();
   };
@@ -86,56 +87,42 @@ const TransactionsScreen = () => {
     isFocused && fetchTransactions(searchQuery);
   }, [isFocused, searchQuery]);
 
-  const pickerItems = [
-    "All",
-    "Transaction Type - Income",
-    "Transaction Type - Expense",
-    "Category - Food",
-    "Category - Transportation",
-    "Category - Entertainment",
-    "Category - Shopping",
-    "Category - Utilities",
-    "Category - Health",
-    "Category - Travel",
-    "Category - Education",
-    "Category - Personal",
-    "Category - Groceries",
-    "Category - Bills",
-    "Category - Salary",
-    "Category - Uncategorized",
+  const [type, setType] = useState("");
+  const [category, setCategory] = useState("");
+  const incomePickerItems = [
+    "Salary",
+    "Allowance",
+    "Commission",
+    "Gifts",
+    "Interests",
+    "Investments",
+    "Selling",
+    "Uncategorized",
   ];
+  const expensePickerItems = [
+    "Food",
+    "Transportation",
+    "Entertainment",
+    "Shopping",
+    "Utilities",
+    "Health",
+    "Travel",
+    "Education",
+    "Personal",
+    "Groceries",
+    "Bills",
+    "Uncategorized",
+  ];
+
   const getFilteredTransactions = () => {
-    return typeFilter == "Transaction Type - Income"
-      ? transactions.filter((it) => it.transactionType == "Income")
-      : typeFilter == "Transaction Type - Expense"
-      ? transactions.filter((it) => it.transactionType == "Expense")
-      : typeFilter == "Category - Food"
-      ? transactions.filter((it) => it.category == "Food")
-      : typeFilter == "Category - Transportation"
-      ? transactions.filter((it) => it.category == "Transportation")
-      : typeFilter == "Category - Entertainment"
-      ? transactions.filter((it) => it.category == "Entertainment")
-      : typeFilter == "Category - Shopping"
-      ? transactions.filter((it) => it.category == "Shopping")
-      : typeFilter == "Category - Utilities"
-      ? transactions.filter((it) => it.category == "Utilities")
-      : typeFilter == "Category - Health"
-      ? transactions.filter((it) => it.category == "Health")
-      : typeFilter == "Category - Travel"
-      ? transactions.filter((it) => it.category == "Travel")
-      : typeFilter == "Category - Education"
-      ? transactions.filter((it) => it.category == "Education")
-      : typeFilter == "Category - Personal"
-      ? transactions.filter((it) => it.category == "Personal")
-      : typeFilter == "Category - Groceries"
-      ? transactions.filter((it) => it.category == "Groceries")
-      : typeFilter == "Category - Bills"
-      ? transactions.filter((it) => it.category == "Bills")
-      : typeFilter == "Category - Salary"
-      ? transactions.filter((it) => it.category == "Salary")
-      : typeFilter == "Category - Uncategorized"
-      ? transactions.filter((it) => it.category == "Uncategorized")
-      : transactions;
+    console.log(type !== "" && category !== "", category);
+    if (type !== "" && category == "")
+      return transactions.filter((item) => item.transactionType === type);
+    if (type !== "" && category !== "")
+      return transactions.filter(
+        (item) => item.transactionType === type && item.category === category
+      );
+    return transactions;
   };
 
   return (
@@ -178,21 +165,73 @@ const TransactionsScreen = () => {
         style={styles.picker}
         mode="dropdown"
         dropdownIconColor={Colors.DARK_GRAY}
-        selectedValue={typeFilter}
-        onValueChange={(val) => setTypeFilter(val)}
+        selectedValue={type}
+        onValueChange={(val) => setType(val)}
       >
-        {pickerItems.map((item, index) => {
-          return (
-            <Picker.Item
-              label={item}
-              value={item}
-              key={index}
-              style={styles.pickerItem}
-            />
-          );
-        })}
+        <Picker.Item
+          label="Select Type"
+          value=""
+          style={{ backgroundColor: Colors.DARK, color: Colors.DARK_GRAY }}
+        />
+        <Picker.Item label="Income" value="Income" style={styles.pickerItem} />
+        <Picker.Item
+          label="Expense"
+          value="Expense"
+          style={styles.pickerItem}
+        />
       </Picker>
-      <View style={{ height: 20 }} />
+      <View style={styles.innerMargin} />
+      {type == "Income" ? (
+        <Picker
+          style={styles.picker}
+          mode="dropdown"
+          dropdownIconColor={Colors.DARK_GRAY}
+          selectedValue={category}
+          onValueChange={(val) => setCategory(val)}
+        >
+          <Picker.Item
+            label="Select Income Category"
+            value=""
+            style={{ backgroundColor: Colors.DARK, color: Colors.DARK_GRAY }}
+          />
+          {incomePickerItems.map((item, index) => {
+            return (
+              <Picker.Item
+                label={item}
+                value={item}
+                key={index}
+                style={styles.pickerItem}
+              />
+            );
+          })}
+        </Picker>
+      ) : type == "Expense" ? (
+        <Picker
+          style={styles.picker}
+          mode="dropdown"
+          dropdownIconColor={Colors.DARK_GRAY}
+          selectedValue={category}
+          onValueChange={(val) => setCategory(val)}
+        >
+          <Picker.Item
+            label="Select Expense Category"
+            value="category"
+            style={{ backgroundColor: Colors.DARK, color: Colors.DARK_GRAY }}
+          />
+          {expensePickerItems.map((item, index) => {
+            return (
+              <Picker.Item
+                label={item}
+                value={item}
+                key={index}
+                style={styles.pickerItem}
+              />
+            );
+          })}
+        </Picker>
+      ) : null}
+      <View style={styles.innerMargin} />
+      <View style={styles.innerMargin} />
       <View style={{ flex: 0.9 }}>
         {loading ? (
           <View style={{ alignItems: "center", justifyContent: "center" }}>
@@ -224,6 +263,9 @@ const TransactionsScreen = () => {
 export default TransactionsScreen;
 
 const styles = StyleSheet.create({
+  innerMargin: {
+    height: 20,
+  },
   search: {
     width: "100%",
     borderWidth: 1,

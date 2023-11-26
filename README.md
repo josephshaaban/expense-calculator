@@ -11,9 +11,9 @@ Develop a simple expense calculator application that allows users to manage thei
 - &#x2610; Develop a user-friendly interface for users to add, edit, and delete expenses.
 - &#x2611; Implement a data structure/database to store user-specific expense records.
 - &#x2611; Ensure that expenses are associated with the logged-in user.
-### &#x2610; Expense Listing
-- &#x2610; Create a page where users can view a list of their own expenses.
-- &#x2610; Include filters to allow users to sort and search for expenses by date, category, ordescription.
+### &#x2611; Expense Listing
+- &#x2611; Create a page where users can view a list of their own expenses.
+- &#x2611; Include filters to allow users to sort and search for expenses by date, category, ordescription.
 ## &#x2610; Web Frontend (React.js/Next.js)
 - &#x2610; Create a responsive web application using React.js/Next.js.
 - &#x2610; Design an intuitive and user-friendly user interface.
@@ -23,12 +23,12 @@ Develop a mobile application using React Native.
 - &#x2610; Ensure the mobile app offers a seamless and user-friendly experience on bothiOS and Android platforms.
 - &#x2611; Ensure that the mobile app communicates effectively with the chosen backendtechnology (Node.js).
 ## &#x2610; Backend Development (Node.js or Laravel)
-- &#x2610; Implement the backend logic for user authentication, expense management, andgenerating reports.
+- &#x2610; Implement the backend logic for user authentication, expense management, and generating reports.
 - &#x2610; Ensure secure communication between the frontend and backend.
 - &#x2610; Implement necessary APIs for frontend functionality.
 ## &#x2610; Monthly Reports (Optional - More credit)
 - &#x2610; Implement a feature that generates monthly expense reports for users.
-- &#x2610; Allow users to select a specific month and year to view a detailed report of theirexpenses for that period.
+- &#x2610; Allow users to select a specific month and year to view a detailed report of their expenses for that period.
 ## &#x2610; PDF Download (Optional - More credit)
 - &#x2610; Develop a functionality that allows users to select a date range and downloadtheir expense report as a PDF document.
 - &#x2610; Ensure that the PDF report contains clear and organized expense information.
